@@ -6,7 +6,7 @@ console.log(process.env.API_SECRET);
 const url=process.env.ATLAS_URL;
 
 //Defining Port
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 //Requiring express
 const express = require("express");
@@ -124,11 +124,10 @@ app.use("/",userRouter);
 app.use("/listings" , listingsRouter);
 app.use("/listings/:id/reviews",reviewsRouter);
 
-
 //This will get all the request
- app.all("/*splat",(req,res,next)=>{
-   next(new ExpressError(404,"Page Not Found"));
- });
+app.all("*", (req, res, next) => {
+    next(new ExpressError(404, "Page Not Found"));
+});
 
 //Error Handling Middleware 
 app.use((err,req,res,next)=>{
