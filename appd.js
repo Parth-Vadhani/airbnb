@@ -33,15 +33,15 @@ const flash=require('connect-flash');
 
 //Creating mongostore for sessions 
 const store=MongoStore.create({
-       mongoUrl:url,
-       crypto:{
-              secret:process.env.SECRET,
-       },
-       touchAfter:24*3600,
+    mongoUrl:url,
+    crypto:{
+        secret:process.env.SECRET,
+    },
+    touchAfter:24*3600,
 });
 
 store.on("error",()=>{
-       console.log("Error in session store",err);
+    console.log("Error in session store",err);
 });
 
 //Variable to store session options 
@@ -51,9 +51,9 @@ const sessionOptions = {
     resave: false,
     saveUninitialized: true,
     cookie: {
-            httpOnly:true,
-            maxAge: 2 * 24 * 60 * 60 * 1000, // 2 days in milliseconds
-            expires: Date.now() + 2 * 24 * 60 * 60 * 1000
+        httpOnly:true,
+        maxAge: 2 * 24 * 60 * 60 * 1000, // 2 days in milliseconds
+        expires: Date.now() + 2 * 24 * 60 * 60 * 1000
     },
 };
 
@@ -114,11 +114,9 @@ app.use((req,res,next)=>{
     next();
 });
 
-//Mount the review router on the listing router
-listingRouter.use("/:id/reviews", reviewRouter);
-
-//Mount the main routers
+// Mount routes
 app.use("/listings", listingRouter);
+app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
 
 //This will get all the request
