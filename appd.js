@@ -120,9 +120,9 @@ app.use((req,res,next)=>{
 });
 
 //Middleware that would redirect particular request to the file containing that routes
-app.use("/",userRouter);
-app.use("/listings" , listingsRouter);
-app.use("/listings/:id/reviews",reviewsRouter);
+app.use("/listings", listingsRouter);
+app.use("/listings/:id/reviews", reviewsRouter);
+app.use("/", userRouter);
 
 //This will get all the request
 app.all("*", (req, res, next) => {
