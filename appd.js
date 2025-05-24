@@ -114,12 +114,10 @@ app.use((req,res,next)=>{
     next();
 });
 
-// Mount routes in order of specificity
-app.use("/listings/:id/reviews", reviewRouter);
+// Mount routes
+app.use("/", userRouter);
 app.use("/listings", listingRouter);
-app.use("/signup", userRouter);
-app.use("/login", userRouter);
-app.use("/logout", userRouter);
+app.use("/listings/:id/reviews", reviewRouter);
 
 //This will get all the request
 app.all("*", (req, res, next) => {
