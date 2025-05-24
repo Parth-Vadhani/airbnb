@@ -22,16 +22,18 @@ const {redirectUrl,validateUser}=require('../utils/middleware.js');
 //Requiring user controller
 const userController=require("../controller/users.js");
 
-router.route("/signup")
-.get(wrapAsync(userController.gsignup))
-.post(validateUser,wrapAsync(userController.psignup));
-// router.put("");
-// router.delete("");
+// Signup routes
+router.get("/", wrapAsync(userController.gsignup));
+router.post("/", validateUser, wrapAsync(userController.psignup));
 
-router.route("/login")
-.get(wrapAsync(userController.glogin))
-.post(redirectUrl,passport.authenticate("local",{failureRedirect : "/login",failureFlash:true}),wrapAsync(userController.plogin));
+// Login routes
+router.get("/", wrapAsync(userController.glogin));
+router.post("/", redirectUrl, passport.authenticate("local", {
+    failureRedirect: "/login",
+    failureFlash: true
+}), wrapAsync(userController.plogin));
 
-router.get("/logout",wrapAsync(userController.logout));
+// Logout route
+router.get("/", wrapAsync(userController.logout));
 
 module.exports=router;
