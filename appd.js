@@ -78,9 +78,16 @@ const ejsMate=require('ejs-mate');
 const ExpressError=require("./utils/expressError");
 
 //Requiring routes 
-const listingsRouter = require("./routes/listing.js");
-const reviewsRouter = require("./routes/review.js");
+const listingRouter = require("./routes/listing.js");
+const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
+
+//Mount the review router on the listing router
+listingRouter.use("/:id/reviews", reviewRouter);
+
+//Mount the main routers
+app.use("/listings", listingRouter);
+app.use("/", userRouter);
 
 //For running server on particular port
 app.listen(port, () => {
@@ -118,11 +125,6 @@ app.use((req,res,next)=>{
     res.locals.currUser=req.user;
     next();
 });
-
-//Middleware that would redirect particular request to the file containing that routes
-app.use("/listings", listingsRouter);
-app.use("/listings/:id/reviews", reviewsRouter);
-app.use("/", userRouter);
 
 //This will get all the request
 app.all("*", (req, res, next) => {
