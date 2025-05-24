@@ -114,10 +114,10 @@ app.use((req,res,next)=>{
     next();
 });
 
-// Mount routes
-app.use("/", userRouter);
-app.use("/listings", listingRouter);
-app.use("/listings/:id/reviews", reviewRouter);
+//Middleware that would redirect particular request to the file containing that routes
+app.use("/",userRouter);
+app.use("/listings" , listingRouter);
+app.use("/listings/:id/reviews",reviewRouter);
 
 //This will get all the request
 app.all("*", (req, res, next) => {
