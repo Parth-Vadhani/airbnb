@@ -1,5 +1,5 @@
 const express=require("express");
-const router=express.Router({mergeParams : true});
+const router=express.Router({mergeParams: true});
 
 //Requiring wrap async for custom error handling 
 const wrapAsync=require("../utils/wrapAsync");
@@ -21,9 +21,9 @@ const {isLoggedIn,validateReview, isAuthor}=require("../utils/middleware.js");
 const reviewController=require("../controller/reviews.js");
 
 //Review Route
-router.post("/",validateReview,isLoggedIn,wrapAsync(reviewController.new));
+router.post("/", isLoggedIn, validateReview, wrapAsync(reviewController.new));
 
 //Review Delete Route
-router.delete("/:reviewId",isLoggedIn,isAuthor,wrapAsync(reviewController.delete));
+router.delete("/:reviewId", isLoggedIn, isAuthor, wrapAsync(reviewController.delete));
 
 module.exports=router;

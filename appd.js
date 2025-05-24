@@ -6,7 +6,7 @@ console.log(process.env.API_SECRET);
 const url=process.env.ATLAS_URL;
 
 //Defining Port
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 
 //Requiring express
 const express = require("express");
@@ -82,18 +82,6 @@ const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 
-//Mount the review router on the listing router
-listingRouter.use("/:id/reviews", reviewRouter);
-
-//Mount the main routers
-app.use("/listings", listingRouter);
-app.use("/", userRouter);
-
-//For running server on particular port
-app.listen(port, () => {
-    console.log(`server is running on port ${port}`);
-});
-
 //For using ejs 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -126,6 +114,13 @@ app.use((req,res,next)=>{
     next();
 });
 
+//Mount the review router on the listing router
+listingRouter.use("/:id/reviews", reviewRouter);
+
+//Mount the main routers
+app.use("/listings", listingRouter);
+app.use("/", userRouter);
+
 //This will get all the request
 app.all("*", (req, res, next) => {
     next(new ExpressError(404, "Page Not Found"));
@@ -133,8 +128,12 @@ app.all("*", (req, res, next) => {
 
 //Error Handling Middleware 
 app.use((err,req,res,next)=>{
-       let {status=500,message="something went wrong"}=err;
-       res.status(status).render("error.ejs",{err});
-       //res.status(status).send(message);
+    let {status=500,message="something went wrong"}=err;
+    res.status(status).render("error.ejs",{err});
+});
+
+//For running server on particular port
+app.listen(port, () => {
+    console.log(`server is running on port ${port}`);
 });
 
